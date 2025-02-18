@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Selection</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+    /* Reset básico */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        color: #333;
+    }
+
+    /* Container principal */
+    .container {
+        text-align: center;
+        padding: 20px;
+    }
+
+    /* Título */
+    h1 {
+        font-size: 2.5rem;
+        margin-bottom: 30px;
+    }
+
+    /* Container dos cards */
+    .card-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        padding: 0 20px;
+    }
+
+    /* Estilos para cada card */
+    .card {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .card h2 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+    }
+
+    .card a {
+        text-decoration: none;
+        color: #0563C6;
+        font-size: 1.2rem;
+        font-weight: bold;
+        transition: color 0.3s ease;
+    }
+
+    .card a:hover {
+        color: #024a84;
+    }
+
+    /* Efeito de hover nos cards */
+    .card:hover {
+        transform: translateY(-10px);
+    }
+</style>
+
+<body>
+    <div class="container">
+        <h1>Escolha um Modelo</h1>
+        <div class="card-container">
+            <div class="card">
+                <h2>Chairman</h2>
+                <a href="./chairman.html" target="_blank">Ver Modelo</a>
+            </div>
+            <div class="card">
+                <h2>Chaplin</h2>
+                <a href="./chaplin.html" target="_blank">Ver Modelo</a>
+            </div>
+            <div class="card">
+                <h2>Fellini</h2>
+                <a href="./fellini.html" target="_blank">Ver Modelo</a>
+            </div>
+            <div class="card">
+                <h2>Greene</h2>
+                <a href="./greene.html" target="_blank">Ver Modelo</a>
+            </div>
+            <div class="card">
+                <h2>Luxor</h2>
+                <a href="./luxor.html" target="_blank">Ver Modelo</a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
