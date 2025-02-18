@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chairman</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="model">
+        <div id="container">
+            <div id="loader">
+                <div class="spinner"></div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.rawgit.com/mrdoob/three.js/r128/examples/js/loaders/GLTFLoader.js"></script>
+    <script>
+        let scene, camera, renderer, model;
+        let isDragging = false;
+        let previousMousePosition = { x: 0, y: 0 };
+
+        function init(url) {
+            scene = new THREE.Scene();
+
+            const container = document.getElementById('container');
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+
+            camera = new THREE.PerspectiveCamera(30, width / height, 1, 3000);
+            setCameraPosition();
+
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(width, height);
+            container.appendChild(renderer.domElement);
+
+            const light = new THREE.DirectionalLight(0xffffff, 2.5);
+            light.position.set(1, 1, 10);
+            scene.add(light);
+
+            loadModel("https://raw.githubusercontent.com/snoorky/starSeat/main/chairman.glb");
+
+            container.addEventListener('mousedown', onMouseDown, false);
+            container.addEventListener('mouseup', onMouseUp, false);
+            container.addEventListener('mousemove', onMouseMove, false);
+            container.addEventListener('touchstart', onTouchStart, false);
+            container.addEventListener('touchmove', onTouchMove, false);
+            container.addEventListener('touchend', onTouchEnd, false);
+
+            window.addEventListener('resize', onWindowResize, false);
+            animate();
+            setTimeout(hideLoader, 5000);
+        }
+
+        function loadModel(url) {
+            const loader = new THREE.GLTFLoader();
+
+            loader.load(url, (gltf) => {
+                model = gltf.scene;
+                model.scale.set(100, 100, 100);
+                scene.add(model);
+            });
+        }
+
+        function hideLoader() {
+            const loader = document.getElementById('loader');
+            loader.style.display = 'none';
+        }
+
+        function setCameraPosition() {
+            if (window.matchMedia("(max-width: 480px)").matches) {
+                camera.position.set(0, 50, 700);
+            } else {
+                camera.position.set(0, 50, 500);
+            }
+        }
+
+        function onMouseDown(event) {
+            isDragging = true;
+            previousMousePosition = { x: event.clientX, y: event.clientY };
+        }
+
+        function onMouseUp() {
+            isDragging = false;
+        }
+
+        function onMouseMove(event) {
+            if (isDragging && model) {
+                const deltaX = event.clientX - previousMousePosition.x;
+                const deltaY = event.clientY - previousMousePosition.y;
+
+                model.rotation.x += deltaY * 0.01;
+                model.rotation.y += deltaX * 0.01;
+                previousMousePosition = { x: event.clientX, y: event.clientY };
+            }
+        }
+
+        let initialTouch = { x: 0, y: 0 };
+
+        function onTouchStart(event) {
+            if (event.touches.length === 1) {
+                isDragging = true;
+                initialTouch.x = event.touches[0].clientX;
+                initialTouch.y = event.touches[0].clientY;
+            }
+        }
+
+        function onTouchMove(event) {
+            if (event.touches.length === 1 && model) {
+                event.preventDefault();
+
+                const deltaX = event.touches[0].clientX - initialTouch.x;
+                const deltaY = event.touches[0].clientY - initialTouch.y;
+
+                model.rotation.y += deltaX * 0.01;
+                model.rotation.x += deltaY * 0.01;
+
+                initialTouch.x = event.touches[0].clientX;
+                initialTouch.y = event.touches[0].clientY;
+            }
+        }
+
+        function onTouchEnd() {
+            isDragging = false;
+        }
+
+        function onWindowResize() {
+            const container = document.getElementById('container');
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+            renderer.setSize(width, height);
+            setCameraPosition();
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            renderer.render(scene, camera);
+        }
+        init();
+    </script>
+</body>
+
+</html>
